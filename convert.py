@@ -1,17 +1,29 @@
 from pydub import AudioSegment
+import os
 
-def convert_mp3_to_wav(mp3_path, wav_path):
-    # Load the mp3 file
-    audio = AudioSegment.from_mp3(mp3_path)
-    
-    # Export the audio file as wav
-    audio.export(wav_path, format="wav")
+def convert_mp3_to_wav(input_directory, output_directory):
+    # Loop over every file in the input directory
+    for filename in os.listdir(input_directory):
+        # If the file is an .mp3 file
+        if filename.endswith(".mp3"):
+            # Construct the full input path
+            input_path = os.path.join(input_directory, filename)
 
-# Define your mp3 file path
-mp3_path = "Audio/FTF.mp3"
+            # Load the mp3 file
+            audio = AudioSegment.from_mp3(input_path)
 
-# Define your output wav file path
-wav_path = "Clean-Audio/FTF.wav"
+            # Construct the output path, replacing .mp3 with .wav
+            output_path = os.path.join(output_directory, filename.replace(".mp3", ".wav"))
 
-# Call the function to convert the file
-convert_mp3_to_wav(mp3_path, wav_path)
+            # Export the audio file as wav
+            audio.export(output_path, format="wav")
+
+if __name__ == "__main__":
+    # Define the input directory
+    input_directory = "Clean-Audio"
+
+    # Define the output directory
+    output_directory = "Split"
+
+    # Call the function to convert all mp3 files
+    convert_mp3_to_wav(input_directory, output_directory)
